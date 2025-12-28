@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prograweb.dndbackend.models.User;
-import com.prograweb.dndbackend.repositories.UserRepository;
+import com.prograweb.dndbackend.domain.models.User;
+import com.prograweb.dndbackend.domain.repositories.UserRepository;
 
 @Service
 public class UserService {
