@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prograweb.dndbackend.domain.models.campaign.Campaign;
 import com.prograweb.dndbackend.services.CampaignService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,7 @@ public class CampaignController {
     
 
     @PostMapping
-    public ResponseEntity<Campaign> addCampaign(@RequestBody Campaign campaign) {
+    public ResponseEntity<Campaign> addCampaign(@Valid @RequestBody Campaign campaign) {
         campaignService.addCampaign(campaign);
         return ResponseEntity.ok(campaign);
     }

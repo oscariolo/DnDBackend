@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 import com.prograweb.dndbackend.services.CharacterService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +36,7 @@ public class CharacterController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> postCharacter(@RequestBody CharacterBase entity) {
+    public ResponseEntity<?> postCharacter(@Valid @RequestBody CharacterBase entity) {
         try{
             characterService.addCharacter(entity);
             return ResponseEntity.ok(entity);
