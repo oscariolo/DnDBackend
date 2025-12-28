@@ -1,8 +1,9 @@
 package com.prograweb.dndbackend.controllers;
 import org.springframework.web.bind.annotation.RestController;
-import com.prograweb.dndbackend.models.User;
-import com.prograweb.dndbackend.models.characters.EnemyCharacter;
-import com.prograweb.dndbackend.models.characters.PlayableCharacter;
+
+import com.prograweb.dndbackend.domain.models.User;
+import com.prograweb.dndbackend.domain.models.characters.EnemyCharacter;
+import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 import com.prograweb.dndbackend.services.CharacterService;
 import com.prograweb.dndbackend.services.UserService;
 import java.util.List;

@@ -1,8 +1,10 @@
 package com.prograweb.dndbackend.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.prograweb.dndbackend.models.campaign.Campaign;
-import com.prograweb.dndbackend.repositories.CampaignRepository;
+
+import com.prograweb.dndbackend.domain.models.campaign.Campaign;
+import com.prograweb.dndbackend.domain.repositories.CampaignRepository;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

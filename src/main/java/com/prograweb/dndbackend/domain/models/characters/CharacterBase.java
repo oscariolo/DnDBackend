@@ -1,4 +1,4 @@
-package com.prograweb.dndbackend.models.characters;
+package com.prograweb.dndbackend.domain.models.characters;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

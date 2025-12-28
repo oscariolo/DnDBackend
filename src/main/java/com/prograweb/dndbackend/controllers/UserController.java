@@ -1,7 +1,8 @@
 package com.prograweb.dndbackend.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.prograweb.dndbackend.models.User;
+
+import com.prograweb.dndbackend.domain.models.User;
 import com.prograweb.dndbackend.services.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

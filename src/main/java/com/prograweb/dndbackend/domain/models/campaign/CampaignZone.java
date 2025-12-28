@@ -1,4 +1,4 @@
-package com.prograweb.dndbackend.models.campaign;
+package com.prograweb.dndbackend.domain.models.campaign;
 
 import java.util.List;
 import lombok.Data;

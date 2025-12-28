@@ -1,4 +1,4 @@
-package com.prograweb.dndbackend.models.campaign;
+package com.prograweb.dndbackend.domain.models.campaign;
 import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
