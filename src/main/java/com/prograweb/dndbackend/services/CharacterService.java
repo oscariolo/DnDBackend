@@ -17,12 +17,20 @@ public class CharacterService {
     @Autowired
     private CharacterRepository characterRepository;
 
-    public void addCharacter(CharacterBase character) {
-        characterRepository.save(character);
+    public CharacterBase addCharacter(CharacterBase character) {
+        return characterRepository.save(character);
+    }
+
+    public List<CharacterBase> getAllCharacters() {
+        return characterRepository.findAll();
     }
 
     public List<PlayableCharacter> getAllPlayableCharacters() {
         return characterRepository.findAllPlayableCharacters();
+    }
+
+    public List<CharacterBase> gettCharactersByUserId(String userId) {
+        return characterRepository.findAll().stream().filter(c -> c.getCreatorId().equals(userId)).toList();
     }
 
 

@@ -4,6 +4,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prograweb.dndbackend.domain.models.User;
 import com.prograweb.dndbackend.services.UserService;
+
+import jakarta.validation.Valid;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

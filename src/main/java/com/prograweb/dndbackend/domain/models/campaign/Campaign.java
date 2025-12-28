@@ -13,7 +13,7 @@ import lombok.Setter;
 public class Campaign {
 
     @Id
-    private final String id;
+    private String id;
 
     private final String dungeonMasterId;
 

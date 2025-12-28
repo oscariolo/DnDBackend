@@ -9,6 +9,8 @@ import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 
 public interface CharacterRepository extends MongoRepository<CharacterBase,String> {
-    @Query("{ '_class' : 'com.prograweb.dndbackend.models.characters.PlayableCharacter' }")
+    @Query(
+        "{ '_class' : 'PlayableCharacter' }"
+    )
     List<PlayableCharacter> findAllPlayableCharacters();
 }

@@ -3,10 +3,13 @@ package com.prograweb.dndbackend.domain.models.characters;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.annotation.TypeAlias;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter@Setter
+@TypeAlias("PlayableCharacter")
 public class PlayableCharacter extends CharacterBase {
 
     private final Map<String, Integer> attributes;

@@ -1,13 +1,14 @@
 package com.prograweb.dndbackend.domain.models.characters;
 
 import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.annotation.TypeAlias;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
+@TypeAlias("EnemyCharacter")
 public class EnemyCharacter extends CharacterBase {
     private String enemyType;
     private int challengeRating;
