@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+##environment files
+/src/main/resources/dndimagestorage-firebase-adminsdk.json
