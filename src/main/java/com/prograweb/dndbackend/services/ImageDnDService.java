@@ -35,7 +35,7 @@ public class ImageDnDService {
 
     // 1. Initialize Google Storage ONCE when the application starts
     @PostConstruct
-    public void init() throws IOException {
+    private void init() throws IOException {
         // We use getClass().getResourceAsStream because it handles leading slashes better
         // Ensure your firebaseResourceFileName in properties starts with a slash, e.g., "/service-account.json"
         InputStream inputStream = getClass().getResourceAsStream(firebaseResourceFileName);
@@ -49,7 +49,7 @@ public class ImageDnDService {
         this.storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
     }
 
-    public String uploadFile(File file, String fileName) throws IOException {
+    private String uploadFile(File file, String fileName) throws IOException {
         // 2. Upload the file
         BlobId blobId = BlobId.of(bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
@@ -91,7 +91,7 @@ public class ImageDnDService {
           return URL;
       } catch (Exception e) {
           e.printStackTrace();
-          return "Image couldn't upload, Something went wrong";
+          throw new RuntimeException("Could not upload the file: " + e.getMessage());
       }
   }
 

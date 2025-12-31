@@ -1,8 +1,7 @@
 package com.prograweb.dndbackend.domain.models.campaign;
-import java.util.List;
+import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,9 +20,22 @@ public class Campaign {
 
     private final int maxPlayers;
 
-    private String description;
+    private final String description;
 
-    private List<CampaignZone> zones;
+    private ArrayList<CampaignZone> campaignZones = new ArrayList<>();
+
+    public void addZone(CampaignZone zone) {
+        this.campaignZones.add(zone);
+    }
+    
+    public void addImageToZone(String zoneName, String imageUrl) {
+        for (CampaignZone zone : campaignZones) {
+            if (zone.getZoneName().equals(zoneName)) {
+                zone.getZoneImgUrls().add(imageUrl);
+                return;
+            }
+        }
+    }
     
 }
 
