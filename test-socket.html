@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D&D Simple Controller Tester</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #00ff9d; }
+        .box { border: 1px solid #333; padding: 15px; margin-bottom: 15px; background: #252525; border-radius: 5px;}
+        input { background: #111; color: white; border: 1px solid #444; padding: 8px; width: 350px; }
+        button { cursor: pointer; background: #333; color: white; border: 1px solid #555; padding: 8px 15px; font-weight: bold;}
+        button:hover { background: #444; }
+        label { display: block; margin-bottom: 5px; color: #aaa; }
+        #log { height: 300px; overflow-y: scroll; border: 1px solid #333; padding: 10px; background: #000; font-size: 13px;}
+    </style>
+</head>
+<body>
+    <h2>⚔️ D&D Simple Socket Tester</h2>
+
+    <div class="box">
+        <label>1. Endpoint del Servidor (WebSocketConfig):</label>
+        <input type="text" id="url" value="http://localhost:8080/dnd-socket">
+        <button onclick="connect()">🔌 Conectar</button>
+        <button onclick="disconnect()" style="color:#ff6b6b">❌ Desconectar</button>
+        <span id="status" style="margin-left:10px">Esperando...</span>
+    </div>
+
+    <div class="box">
+        <label>2. Suscribirse (Coincide con @SendTo):</label>
+        <input type="text" id="subTopic" value="/topic/game-session/dm-8821-xyz">
+        <button onclick="subscribe()">🔔 Suscribirse</button>
+    </div>
+
+    <div class="box">
+        <label>3. Enviar Mensaje (Coincide con Prefijo App + @MessageMapping):</label>
+        <input type="text" id="sendDest" value="/app/game-session/dm-8821-xyz">
+        <br><br>
+        <label>Mensaje (Payload String):</label>
+        <textarea id="payload" style="width:100%; height:60px; background:#111; color:#fff; border:1px solid #444">Hola Mundo desde el navegador!</textarea>
+        <br><br>
+        <button onclick="send()">🚀 Enviar</button>
+    </div>
+
+    <div id="log"></div>
+
+    <script>
+        var stompClient = null;
+
+        function log(msg) {
+            var logDiv = document.getElementById('log');
+            var p = document.createElement('div');
+            p.style.borderBottom = "1px solid #222";
+            p.style.padding = "2px 0";
+            p.innerHTML = msg;
+            logDiv.appendChild(p);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function connect() {
+            var socket = new SockJS(document.getElementById('url').value);
+            stompClient = Stomp.over(socket);
+            stompClient.debug = null; // Quita esto si quieres ver muchos logs en la consola del navegador
+
+            stompClient.connect({}, function (frame) {
+                document.getElementById('status').innerHTML = "🟢 Conectado";
+                document.getElementById('status').style.color = "#00ff9d";
+                log("--- Conexión establecida ---");
+            }, function(error) {
+                document.getElementById('status').innerHTML = "🔴 Error";
+                document.getElementById('status').style.color = "red";
+                log("<span style='color:red'>Error: " + error + "</span>");
+            });
+        }
+
+        function disconnect() {
+            if (stompClient !== null) stompClient.disconnect();
+            document.getElementById('status').innerHTML = "⚪ Desconectado";
+            document.getElementById('status').style.color = "#aaa";
+            log("--- Desconectado ---");
+        }
+
+        function subscribe() {
+            if(!stompClient) { alert("Primero conecta!"); return; }
+            var topic = document.getElementById('subTopic').value;
+            stompClient.subscribe(topic, function (message) {
+                // Aquí recibimos lo que el servidor retorna en 'return message'
+                log("<span style='color:cyan'>📥 RECIBIDO:</span> " + message.body);
+            });
+            log("Suscrito a: " + topic);
+        }
+
+        function send() {
+            if(!stompClient) { alert("Primero conecta!"); return; }
+            var dest = document.getElementById('sendDest').value;
+            var payload = document.getElementById('payload').value;
+            
+            // Enviamos el mensaje
+            stompClient.send(dest, {}, payload);
+            log("📤 ENVIADO: " + payload);
+        }
+    </script>
+</body>
+</html>
