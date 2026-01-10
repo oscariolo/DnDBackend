@@ -1,5 +1,4 @@
 package com.prograweb.dndbackend.controllers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -7,15 +6,11 @@ import org.springframework.stereotype.Controller;
 
 import com.prograweb.dndbackend.domain.dtos.GameEvents.ChatMessageDTO;
 import com.prograweb.dndbackend.domain.dtos.GameEvents.ZoneUpdateDTO;
-import com.prograweb.dndbackend.services.DnDGameService;
 
 @Controller
 @MessageMapping("/game-session/{roomId}") // 1. Prefix for INCOMING messages
 //TODO implementar que al momento de conectarse a la sala primero se recupere el estado actual de la campaña (zona actual, personajes, etc)
-public class GameSessionController {
-
-    @Autowired
-    private DnDGameService dndGameService;
+public class GameEventsController {
 
     @MessageMapping("/zone-update")
     @SendTo("/topic/game-session/{roomId}/zone-update") 

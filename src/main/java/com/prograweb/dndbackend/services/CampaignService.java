@@ -11,6 +11,8 @@ import com.prograweb.dndbackend.domain.models.campaign.Campaign;
 import com.prograweb.dndbackend.domain.models.campaign.CampaignZone;
 import com.prograweb.dndbackend.domain.repositories.CampaignRepository;
 
+
+//This service is only for static campaign operations, not intended for in game context
 @Service
 public class CampaignService {
 
@@ -60,6 +62,5 @@ public class CampaignService {
     public List<Campaign> getCampaignByDungeonMasterId(String dungeonMasterId) {
         return campaignRepository.findByDungeonMasterId(dungeonMasterId);
     }
-
     
 }

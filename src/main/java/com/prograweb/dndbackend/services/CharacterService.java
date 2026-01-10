@@ -9,8 +9,6 @@ import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 import com.prograweb.dndbackend.domain.repositories.CharacterRepository;
 
-//TODO: Agregar un personaje debe especificarse el tipo que es
-//Segun ese tipo se mapea a la subclase correspondiente y se guarda en la base de datos
 
 @Service
 public class CharacterService {
