@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
+import com.prograweb.dndbackend.domain.models.characters.EnemyCharacter;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 
 public interface CharacterRepository extends MongoRepository<CharacterBase,String> {
@@ -13,4 +14,9 @@ public interface CharacterRepository extends MongoRepository<CharacterBase,Strin
         "{ '_class' : 'PlayableCharacter' }"
     )
     List<PlayableCharacter> findAllPlayableCharacters();
+
+    @Query(
+        "{ '_class' : 'EnemyCharacter' }"
+    )
+    List<EnemyCharacter> findAllEnemyCharacters();
 }

@@ -8,6 +8,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
+import com.prograweb.dndbackend.domain.models.characters.EnemyCharacter;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 import com.prograweb.dndbackend.services.CharacterService;
 
@@ -34,6 +35,13 @@ public class CharacterController {
     public ResponseEntity<List<PlayableCharacter>> getPlayableCharacters() {
         return ResponseEntity.ok(characterService.getAllPlayableCharacters());
     }
+
+    @GetMapping("/enemy")
+    public ResponseEntity<List<EnemyCharacter>> getEnemies() {
+        return ResponseEntity.ok(characterService.getAllEnemyCharacters());
+    
+    }
+    
 
     @PostMapping()
     public ResponseEntity<?> postCharacter(@Valid @RequestBody CharacterBase entity) {

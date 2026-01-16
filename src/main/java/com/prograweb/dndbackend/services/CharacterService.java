@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
+import com.prograweb.dndbackend.domain.models.characters.EnemyCharacter;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 import com.prograweb.dndbackend.domain.repositories.CharacterRepository;
 
@@ -25,6 +26,10 @@ public class CharacterService {
 
     public List<PlayableCharacter> getAllPlayableCharacters() {
         return characterRepository.findAllPlayableCharacters();
+    }
+
+    public List<EnemyCharacter> getAllEnemyCharacters() {
+        return characterRepository.findAllEnemyCharacters();
     }
 
     public List<CharacterBase> gettCharactersByUserId(String userId) {
