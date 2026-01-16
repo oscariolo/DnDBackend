@@ -12,7 +12,7 @@ import lombok.Setter;
 @TypeAlias("PlayableCharacter")
 public class PlayableCharacter extends CharacterBase {
 
-    private final Map<String, Integer> attributes;
+    private Map<String, Integer> attributes;
     private final String characterClass;
     private List<String> skills;
     private List<String> inventoryItems;

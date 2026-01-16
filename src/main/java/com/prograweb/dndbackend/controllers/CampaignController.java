@@ -2,8 +2,12 @@ package com.prograweb.dndbackend.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.prograweb.dndbackend.domain.dtos.CampaignUploadDTO;
+import com.prograweb.dndbackend.domain.dtos.GameEvents.LevelUpDTO;
 import com.prograweb.dndbackend.domain.models.campaign.Campaign;
+import com.prograweb.dndbackend.domain.models.campaign.CampaignRun;
 import com.prograweb.dndbackend.services.CampaignService;
+import com.prograweb.dndbackend.services.DnDGameService;
+
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -23,6 +29,9 @@ public class CampaignController {
 
     @Autowired
     private CampaignService campaignService;
+
+    @Autowired
+    private DnDGameService gameService;
 
     @GetMapping
     public ResponseEntity<List<Campaign>> getAllCampaigns() {
@@ -50,5 +59,15 @@ public class CampaignController {
         return ResponseEntity.ok(campaign);
     }
 
+    @PostMapping("/session")
+    public CampaignRun createNewCampaignRun(@RequestBody CampaignRun newRun) {
+        return gameService.saveCampaignRun(newRun);
+    }
+
+    @PutMapping("/session/levelup")
+    public ResponseEntity<CampaignRun> levelUpCharacter(@RequestBody LevelUpDTO levelUpDto) {
+        CampaignRun updateLevel = gameService.levelUpCharacter(levelUpDto);
+        return ResponseEntity.ok(updateLevel);
+    }
 
 }
