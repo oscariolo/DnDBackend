@@ -1,4 +1,4 @@
-package com.prograweb.dndbackend.configs;
+package com.prograweb.dndbackend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
