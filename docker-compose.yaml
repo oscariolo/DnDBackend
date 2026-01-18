@@ -4,7 +4,9 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
+
   mongodb:
     image: mongo:latest
     container_name: dndmongodb
@@ -16,6 +18,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: adminpassword
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   mongo-data:
