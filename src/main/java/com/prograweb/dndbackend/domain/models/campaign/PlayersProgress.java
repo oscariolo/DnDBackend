@@ -7,14 +7,12 @@ import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 import lombok.Data;
 
 @Data
-public class CampaignProgress {
+public class PlayersProgress {
     
-    private final Map<String,PlayableCharacter> playersProgress;
-
-    private String currentZoneName;
+    private final Map<String,PlayableCharacter> charactersProgress;
 
     public void levelUpCharacter(String playerIndex, Map<String,Integer> levelUpMap){
-        PlayableCharacter character = playersProgress.get(playerIndex);
+        PlayableCharacter character = charactersProgress.get(playerIndex);
         Map<String,Integer> currentAttributes = character.getAttributes();
 
         for (String attributeName : levelUpMap.keySet() ) {
@@ -23,7 +21,7 @@ public class CampaignProgress {
         }
 
         character.setAttributes(currentAttributes);
-        playersProgress.put(playerIndex, character);
+        charactersProgress.put(playerIndex, character);
     }
 
 }

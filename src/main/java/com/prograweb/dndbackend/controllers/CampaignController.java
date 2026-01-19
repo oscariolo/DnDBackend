@@ -2,6 +2,7 @@ package com.prograweb.dndbackend.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.prograweb.dndbackend.domain.dtos.CampaignUploadDTO;
+import com.prograweb.dndbackend.domain.dtos.NewCampaignCharacterDTO;
 import com.prograweb.dndbackend.domain.dtos.GameEvents.LevelUpDTO;
 import com.prograweb.dndbackend.domain.models.campaign.Campaign;
 import com.prograweb.dndbackend.domain.models.campaign.CampaignRun;
@@ -9,6 +10,8 @@ import com.prograweb.dndbackend.services.CampaignService;
 import com.prograweb.dndbackend.services.DnDGameService;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -59,15 +64,32 @@ public class CampaignController {
         return ResponseEntity.ok(campaign);
     }
 
-    @PostMapping("/session")
+    @PostMapping("/game")
     public CampaignRun createNewCampaignRun(@RequestBody CampaignRun newRun) {
         return gameService.saveCampaignRun(newRun);
     }
 
-    @PutMapping("/session/levelup")
+    @PutMapping("/game/levelup")
     public ResponseEntity<CampaignRun> levelUpCharacter(@RequestBody LevelUpDTO levelUpDto) {
         CampaignRun updateLevel = gameService.levelUpCharacter(levelUpDto);
         return ResponseEntity.ok(updateLevel);
     }
+
+    @PostMapping("/game/character")
+    public ResponseEntity<CampaignRun> postGameCharacter(@RequestBody NewCampaignCharacterDTO newcharacterDto) {
+        CampaignRun campaignRun = gameService.addNewCharacterToRun(newcharacterDto);
+        if(campaignRun == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(campaignRun);
+    }
+
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<CampaignRun> getCampaignRun(@PathVariable String gameId) {
+        CampaignRun campaignRun = gameService.getCampaignRunById(gameId);
+        return ResponseEntity.ok(campaignRun);
+    }
+    
+    
 
 }

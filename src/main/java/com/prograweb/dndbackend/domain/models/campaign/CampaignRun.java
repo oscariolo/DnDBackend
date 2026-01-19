@@ -3,6 +3,11 @@ package com.prograweb.dndbackend.domain.models.campaign;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
+import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
+
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 
@@ -24,8 +29,22 @@ public class CampaignRun {
     @Id
     private String id;
 
-    private String campaignId;
+    private String baseCampaignId;
     
-    private CampaignProgress progress;
+    private PlayersProgress playersProgress;
+
+    private Map<String, Object> availableCharacters;
+
+
+    public List<PlayableCharacter> getPlayableCharacters(){
+
+        List<PlayableCharacter> playableCharacters = availableCharacters.values().stream()
+        .filter(character -> character instanceof PlayableCharacter)
+        .map(character -> (PlayableCharacter) character)
+        .toList();
+
+        return playableCharacters;
+
+    }
 
 }
