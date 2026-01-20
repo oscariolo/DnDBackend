@@ -3,15 +3,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.prograweb.dndbackend.domain.dtos.CampaignUploadDTO;
 import com.prograweb.dndbackend.domain.dtos.NewCampaignCharacterDTO;
+import com.prograweb.dndbackend.domain.dtos.NewPlayerDTO;
 import com.prograweb.dndbackend.domain.dtos.GameEvents.LevelUpDTO;
 import com.prograweb.dndbackend.domain.models.campaign.Campaign;
 import com.prograweb.dndbackend.domain.models.campaign.CampaignRun;
 import com.prograweb.dndbackend.services.CampaignService;
 import com.prograweb.dndbackend.services.DnDGameService;
-
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -89,6 +87,21 @@ public class CampaignController {
         CampaignRun campaignRun = gameService.getCampaignRunById(gameId);
         return ResponseEntity.ok(campaignRun);
     }
+    
+    @GetMapping("/game/user/playing/{userId}")
+    public ResponseEntity<List<CampaignRun>> getCampaignsPlayingByUserId(@PathVariable String userId) {
+        List<CampaignRun> campaignRuns = gameService.getCampaignsPlayingByUserId(userId);
+        return ResponseEntity.ok(campaignRuns);
+    }
+
+    @PostMapping("/game/user")
+    public ResponseEntity<String> postNewPlayerToCampaign(@RequestBody NewPlayerDTO newPlayerentity) {
+        gameService.addNewPlayerToCampaign(newPlayerentity);
+        return ResponseEntity.ok("Player added to the campaign successfully");
+    }
+    
+
+    
     
     
 

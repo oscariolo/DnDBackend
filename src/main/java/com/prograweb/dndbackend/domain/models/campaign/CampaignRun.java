@@ -1,11 +1,8 @@
 package com.prograweb.dndbackend.domain.models.campaign;
-
-
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.prograweb.dndbackend.domain.models.characters.CharacterBase;
 import com.prograweb.dndbackend.domain.models.characters.PlayableCharacter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +27,8 @@ public class CampaignRun {
     private String id;
 
     private String baseCampaignId;
+
+    private ArrayList<String> playerIds;
     
     private PlayersProgress playersProgress;
 
