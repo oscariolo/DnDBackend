@@ -7,5 +7,7 @@ import com.prograweb.dndbackend.domain.models.User;
 public interface UserRepository extends MongoRepository<User,String>{
     
     public Optional<User> findById(String id);
+    public Optional<User> findByEmail(String email);
+    public Optional<User> findByUsername(String username);
     
 }
