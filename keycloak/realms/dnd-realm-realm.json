@@ -548,7 +548,7 @@
       "standard.token.exchange.enabled" : "false",
       "oauth2.device.authorization.grant.enabled" : "false",
       "backchannel.logout.revoke.offline.tokens" : "false",
-      "dpop.bound.access.tokens" : "true"
+      "dpop.bound.access.tokens" : "false"
     },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,

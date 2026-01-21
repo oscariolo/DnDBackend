@@ -10,7 +10,7 @@ services:
       - keycloak.server-url=http://keycloak:8080
       - keycloak.realm=dnd-realm
       - keycloak.client-id=dnd-client
-      - keycloak.client-secret=your-client-secret
+      - keycloak.client-secret=gea5tOXxTF4X1FOkhDqLgQ29ee4SesBF
       - keycloak.admin-username=admin
       - keycloak.admin-password=admin
 
