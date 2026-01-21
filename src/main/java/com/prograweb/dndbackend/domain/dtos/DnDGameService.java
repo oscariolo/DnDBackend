@@ -1,12 +1,10 @@
-package com.prograweb.dndbackend.services;
+package com.prograweb.dndbackend.domain.dtos;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.prograweb.dndbackend.domain.dtos.GameEvents.LevelUpDTO;
-import com.prograweb.dndbackend.domain.models.campaign.CampaignProgress;
 import com.prograweb.dndbackend.domain.models.campaign.CampaignRun;
+import com.prograweb.dndbackend.domain.models.campaign.PlayersProgress;
 import com.prograweb.dndbackend.domain.repositories.CampaignRunRepository;
 
 
@@ -27,9 +25,9 @@ public class DnDGameService {
         Optional<CampaignRun> currentRun = campaignRunRepository.findById(levelUpInfo.gameId);
         System.out.println(currentRun.toString());
         if(currentRun.isPresent()){
-            CampaignProgress gameProgress = currentRun.get().getProgress();
+            PlayersProgress gameProgress = currentRun.get().getPlayersProgress();
             gameProgress.levelUpCharacter(levelUpInfo.playerId, levelUpInfo.attributelevelUp); 
-            currentRun.get().setProgress(gameProgress);  
+            currentRun.get().setPlayersProgress(gameProgress);  
             return campaignRunRepository.save(currentRun.get());
         }
         return null;

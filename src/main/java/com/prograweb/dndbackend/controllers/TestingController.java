@@ -37,7 +37,7 @@ public class TestingController {
 
     @PostMapping("/testUser")
     public ResponseEntity<List<User>> testUser() {
-        userService.addUser(new User("mockUser", "mockEmail@example.com"));
+        userService.addUser(new User("mockUser", "mockEmail@example.com", "mockFirstName", "mockLastName"));
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

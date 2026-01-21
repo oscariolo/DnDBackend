@@ -1,8 +1,7 @@
 package com.prograweb.dndbackend.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import com.prograweb.dndbackend.domain.dtos.ApiResponse;
+import org.springframework.web.server.ResponseStatusException;
 import com.prograweb.dndbackend.domain.dtos.RegisterUserDTO;
 import com.prograweb.dndbackend.domain.models.User;
 import com.prograweb.dndbackend.services.UserService;
@@ -37,14 +36,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<User>> registerUser(@Valid @RequestBody RegisterUserDTO registerDTO) {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterUserDTO registerDTO) {
         try {
             User createdUser = userService.registerUser(registerDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ApiResponse.success("User registered successfully", createdUser));
+                    .body(createdUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ApiResponse.error(e.getMessage()));
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }
