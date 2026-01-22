@@ -11,8 +11,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.util.Base64;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
 
 @Service
 public class AuthService {
