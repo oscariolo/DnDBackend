@@ -10,6 +10,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URI;
+import java.util.Base64;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Claims;
 
 @Service
 public class AuthService {
@@ -57,6 +60,45 @@ public class AuthService {
             }
         } catch (Exception e) {
             throw new RuntimeException("Error authenticating with Keycloak: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean validateTokenWithKeycloak(String token) {
+        try {
+            String tokenIntrospectUrl = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token/introspect";
+            
+            String body = "token=" + URLEncoder.encode(token, StandardCharsets.UTF_8) +
+                    "&client_id=" + URLEncoder.encode(clientId, StandardCharsets.UTF_8) +
+                    "&client_secret=" + URLEncoder.encode(clientSecret, StandardCharsets.UTF_8);
+            
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(tokenIntrospectUrl))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+            
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() == 200) {
+                JsonNode jsonNode = objectMapper.readTree(response.body());
+                return jsonNode.get("active").asBoolean(false);
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getUsernameFromToken(String token) {
+        try {
+            // Decode JWT without validation (validation is done via Keycloak)
+            String[] parts = token.split("\\.");
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            JsonNode jsonNode = objectMapper.readTree(payload);
+            return jsonNode.get("preferred_username").asText();
+        } catch (Exception e) {
+            return null;
         }
     }
 
