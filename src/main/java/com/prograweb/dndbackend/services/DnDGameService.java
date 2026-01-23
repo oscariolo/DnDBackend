@@ -39,7 +39,7 @@ public class DnDGameService {
             runObject.getPlayerIds().add(newPlayer.playerId);
             return campaignRunRepository.save(runObject);
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Game not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Juego no encontrado");
         }
     }
 
@@ -56,7 +56,7 @@ public class DnDGameService {
         if(!currentRuns.isEmpty()){
             return currentRuns;
         }
-        return null;
+        return List.of(); // Return empty list instead of null
     }
 
 

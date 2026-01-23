@@ -15,6 +15,7 @@ import com.prograweb.dndbackend.services.CharacterService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,6 +43,10 @@ public class CharacterController {
     
     }
     
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PlayableCharacter>> getCharactersByUserId(@PathVariable String userId) {
+        return ResponseEntity.ok(characterService.getCharactersByUserId(userId));
+    }
 
     @PostMapping()
     public ResponseEntity<?> postCharacter(@Valid @RequestBody CharacterBase entity) {
@@ -50,7 +55,7 @@ public class CharacterController {
             return ResponseEntity.ok(entity);
         }catch(HttpMessageNotReadableException e){
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("Invalid character type or data");
+            return ResponseEntity.badRequest().body("Tipo de personaje o datos inválidos");
         }
         catch(Exception e){
             System.out.println(e.getMessage());

@@ -97,12 +97,16 @@ public class CampaignController {
     @PostMapping("/game/user")
     public ResponseEntity<String> postNewPlayerToCampaign(@RequestBody NewPlayerDTO newPlayerentity) {
         gameService.addNewPlayerToCampaign(newPlayerentity);
-        return ResponseEntity.ok("Player added to the campaign successfully");
+        return ResponseEntity.ok("Jugador agregado a la campaña exitosamente");
     }
-    
 
-    
-    
-    
+    @GetMapping("/{campaignId}")
+    public ResponseEntity<Campaign> getCampaignById(@PathVariable String campaignId) {
+        Campaign campaign = campaignService.findById(campaignId);
+        if (campaign == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(campaign);
+    }
 
 }

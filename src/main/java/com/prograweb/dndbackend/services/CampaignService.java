@@ -62,5 +62,9 @@ public class CampaignService {
     public List<Campaign> getCampaignByDungeonMasterId(String dungeonMasterId) {
         return campaignRepository.findByDungeonMasterId(dungeonMasterId);
     }
+
+    public Campaign findById(String campaignId) {
+        return campaignRepository.findById(campaignId).orElse(null);
+    }
     
 }

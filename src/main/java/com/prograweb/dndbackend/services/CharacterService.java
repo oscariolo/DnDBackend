@@ -35,6 +35,13 @@ public class CharacterService {
     public List<CharacterBase> gettCharactersByUserId(String userId) {
         return characterRepository.findAll().stream().filter(c -> c.getCreatorId().equals(userId)).toList();
     }
+    
+    public List<PlayableCharacter> getCharactersByUserId(String userId) {
+        return characterRepository.findAll().stream()
+            .filter(c -> c instanceof PlayableCharacter && c.getCreatorId().equals(userId))
+            .map(c -> (PlayableCharacter) c)
+            .toList();
+    }
 
 
 }
