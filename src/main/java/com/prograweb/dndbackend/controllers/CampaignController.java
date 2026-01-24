@@ -46,7 +46,6 @@ public class CampaignController {
         return ResponseEntity.ok(campaignService.getCampaignByDungeonMasterId(userId));
     }
     
-    //Endpoint dedicated to upload a campaign meaning with images attached to the request
     @PostMapping(path = "/upload",
         consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
     )

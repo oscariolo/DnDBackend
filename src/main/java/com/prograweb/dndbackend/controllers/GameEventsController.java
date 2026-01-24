@@ -19,7 +19,7 @@ public class GameEventsController {
             return event;
         } catch (Exception e) {
             e.printStackTrace();
-            return null; // returning null prevents sending any message
+            return null; 
         }
     }
 
