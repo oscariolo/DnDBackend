@@ -27,17 +27,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = extractJwtFromRequest(request);
             
             if (jwt != null && !jwt.isEmpty()) {
-                // Validate token with Keycloak
+                logger.info("JWT token found, validating with Keycloak...");
                 if (authService.validateTokenWithKeycloak(jwt)) {
-                    // Extract user info and set authentication
+                    logger.info("Token validado exitosamente");
                     String username = authService.getUsernameFromToken(jwt);
+                    logger.info("Setting authentication for user: " + username);
                     
                     UsernamePasswordAuthenticationToken authentication = 
                         new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    logger.warn("Token validation failed with Keycloak");
                 }
+            } else {
+                logger.warn("No JWT token found in request to: " + request.getRequestURI());
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);

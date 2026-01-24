@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<String> addUser(@Valid @RequestBody User user) {
         userService.addUser(user);
-        return ResponseEntity.ok("User created successfully");
+        return ResponseEntity.ok("Usuario creado exitosamente");
     }
 
     @PostMapping("/register")

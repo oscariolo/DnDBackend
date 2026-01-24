@@ -46,7 +46,6 @@ public class CampaignController {
         return ResponseEntity.ok(campaignService.getCampaignByDungeonMasterId(userId));
     }
     
-    //Endpoint dedicated to upload a campaign meaning with images attached to the request
     @PostMapping(path = "/upload",
         consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
     )
@@ -97,12 +96,16 @@ public class CampaignController {
     @PostMapping("/game/user")
     public ResponseEntity<String> postNewPlayerToCampaign(@RequestBody NewPlayerDTO newPlayerentity) {
         gameService.addNewPlayerToCampaign(newPlayerentity);
-        return ResponseEntity.ok("Player added to the campaign successfully");
+        return ResponseEntity.ok("Jugador agregado a la campaña exitosamente");
     }
-    
 
-    
-    
-    
+    @GetMapping("/{campaignId}")
+    public ResponseEntity<Campaign> getCampaignById(@PathVariable String campaignId) {
+        Campaign campaign = campaignService.findById(campaignId);
+        if (campaign == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(campaign);
+    }
 
 }

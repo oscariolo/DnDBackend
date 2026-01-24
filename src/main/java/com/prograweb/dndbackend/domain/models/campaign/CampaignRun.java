@@ -28,6 +28,8 @@ public class CampaignRun {
 
     private String baseCampaignId;
 
+    private String dungeonMasterId;
+
     private ArrayList<String> playerIds;
     
     private PlayersProgress playersProgress;
@@ -36,6 +38,9 @@ public class CampaignRun {
 
 
     public List<PlayableCharacter> getPlayableCharacters(){
+        if (availableCharacters == null) {
+            return new ArrayList<>();
+        }
 
         List<PlayableCharacter> playableCharacters = availableCharacters.values().stream()
         .filter(character -> character instanceof PlayableCharacter)

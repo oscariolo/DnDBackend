@@ -19,7 +19,7 @@ public class GameEventsController {
             return event;
         } catch (Exception e) {
             e.printStackTrace();
-            return null; // returning null prevents sending any message
+            return null; 
         }
     }
 
@@ -45,7 +45,7 @@ public class GameEventsController {
             if(diceRoll.messageContent.matches("\\d+")) {
                 return diceRoll;
             }else{
-                System.err.println("Invalid dice roll expression: " + diceRoll.messageContent);
+                System.err.println("Expresión de tirada de dados inválida: " + diceRoll.messageContent);
                 return null;
             }
         } catch (Exception e) {

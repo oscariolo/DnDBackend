@@ -19,9 +19,11 @@ import com.prograweb.dndbackend.services.AuthService.AuthTokenResponse;
 import com.prograweb.dndbackend.services.UserService;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/auth")
+@Slf4j
 public class AuthController {
 
     @Autowired
@@ -51,34 +53,33 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDTO>> login(@Valid @RequestBody LoginUserDTO loginDTO) {
         try {
-            // Authenticate with Keycloak
             AuthTokenResponse tokens = authService.authenticate(
                     loginDTO.getEmailOrUsername(),
                     loginDTO.getPassword()
             );
-
-            // Get user from database (email or username)
             User user = userService.getUserByEmailOrUsername(loginDTO.getEmailOrUsername());
 
             if (user == null) {
+                log.error("Usuario no encontrado para: {}", loginDTO.getEmailOrUsername());
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(ApiResponse.error("User not found"));
+                        .body(ApiResponse.error("Usuario no encontrado"));
             }
-
-            // Build response
             LoginResponseDTO response = new LoginResponseDTO(
                     tokens.accessToken,
                     tokens.refreshToken,
+                    user.getId(),
                     user.getUsername(),
                     user.getEmail(),
                     tokens.expiresIn
             );
+            
+            log.info("DEBUG - LoginResponseDTO userId: {}", response.getUserId());
 
-            return ResponseEntity.ok(ApiResponse.success("Login successful", response));
+            return ResponseEntity.ok(ApiResponse.success("Inicio de sesión exitoso", response));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error("Invalid credentials: " + e.getMessage()));
+                    .body(ApiResponse.error("Credenciales inválidas: " + e.getMessage()));
         }
     }
 
@@ -92,18 +93,17 @@ public class AuthController {
                     tokens.refreshToken,
                     null,
                     null,
+                    null,
                     tokens.expiresIn
             );
 
-            return ResponseEntity.ok(ApiResponse.success("Token refreshed", response));
+            return ResponseEntity.ok(ApiResponse.success("Token actualizado", response));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(ApiResponse.error("Token refresh failed"));
         }
     }
-
-    // Inner class for refresh request
     public static class RefreshTokenRequest {
         public String refreshToken;
 
