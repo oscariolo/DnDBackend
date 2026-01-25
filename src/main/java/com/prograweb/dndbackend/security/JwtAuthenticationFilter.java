@@ -27,25 +27,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = extractJwtFromRequest(request);
             
             if (jwt != null && !jwt.isEmpty()) {
-                logger.info("JWT token found, validating with Keycloak...");
+                logger.info("Token JWT encontrado, validando con Keycloak...");
+                String issuer = authService.getIssuerFromToken(jwt);
+                logger.debug("Token issuer='" + issuer + "' for request " + request.getRequestURI());
                 if (authService.validateTokenWithKeycloak(jwt)) {
                     logger.info("Token validado exitosamente");
                     String username = authService.getUsernameFromToken(jwt);
-                    logger.info("Setting authentication for user: " + username);
-                    
-                    UsernamePasswordAuthenticationToken authentication = 
-                        new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                    logger.info("Estableciendo autenticación para el usuario: " + username);
+
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    
+
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 } else {
-                    logger.warn("Token validation failed with Keycloak");
+                    String uri = request.getRequestURI();
+                    if (uri != null && (uri.equals("/api/auth/refresh") || uri.startsWith("/api/auth/refresh"))) {
+                        logger.warn("Validación de token fallida pero permitiendo continuar para endpoint de refresh: " + uri);
+                    } else {
+                        logger.warn("Validación de token fallida con Keycloak para la petición: " + request.getRequestURI());
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        response.getWriter().write("{\"error\":\"Token inválido o expirado\"}");
+                        return;
+                    }
                 }
             } else {
-                logger.warn("No JWT token found in request to: " + request.getRequestURI());
+                logger.debug("No se encontró token JWT en la petición a: " + request.getRequestURI());
             }
         } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
+            logger.error("No se pudo establecer la autenticación del usuario en el contexto de seguridad", ex);
         }
 
         filterChain.doFilter(request, response);

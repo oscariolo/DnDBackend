@@ -2,6 +2,8 @@ package com.prograweb.dndbackend.services;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URLEncoder;
@@ -14,6 +16,8 @@ import java.util.Base64;
 
 @Service
 public class AuthService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     @Value("${keycloak.server-url}")
     private String keycloakServerUrl;
@@ -78,12 +82,19 @@ public class AuthService {
             
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             
-            if (response.statusCode() == 200) {
-                JsonNode jsonNode = objectMapper.readTree(response.body());
-                return jsonNode.get("active").asBoolean(false);
+            int status = response.statusCode();
+            String respBody = response.body();
+            if (status == 200) {
+                JsonNode jsonNode = objectMapper.readTree(respBody);
+                boolean active = jsonNode.get("active").asBoolean(false);
+                logger.debug("Keycloak introspect response active=" + active + " for token");
+                return active;
+            } else {
+                logger.warn("Keycloak introspection returned status " + status + " with body: " + respBody);
             }
             return false;
         } catch (Exception e) {
+            logger.error("Error validating token with Keycloak: " + e.getMessage(), e);
             return false;
         }
     }
@@ -95,6 +106,17 @@ public class AuthService {
             String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
             JsonNode jsonNode = objectMapper.readTree(payload);
             return jsonNode.get("preferred_username").asText();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getIssuerFromToken(String token) {
+        try {
+            String[] parts = token.split("\\.");
+            String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+            JsonNode jsonNode = objectMapper.readTree(payload);
+            return jsonNode.has("iss") ? jsonNode.get("iss").asText() : null;
         } catch (Exception e) {
             return null;
         }
