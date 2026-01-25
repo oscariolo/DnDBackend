@@ -15,16 +15,18 @@ public class PlayableCharacter extends CharacterBase {
     private Map<String, Integer> attributes;
     private final String characterClass;
     private List<String> skills;
+    private String race;
     private List<String> inventoryItems;
 
     @PersistenceCreator
     public PlayableCharacter(String id, String creatorId, String name, Map<String, Integer> attributes,
-            String characterClass, List<String> skills, List<String> inventoryItems) {
+            String characterClass, List<String> skills, List<String> inventoryItems, String race) {
         super(id, creatorId, name);
         this.attributes = attributes;
         this.characterClass = characterClass;
         this.skills = skills == null ? List.of() : skills;
         this.inventoryItems = inventoryItems == null ? List.of() : inventoryItems;
+        this.race = race;
     }
 
     public void levelUpAttribute(String attribute, int increment) {

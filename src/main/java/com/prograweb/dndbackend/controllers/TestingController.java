@@ -43,7 +43,7 @@ public class TestingController {
 
     @PostMapping("/testPlayableCharacter")
     public ResponseEntity<List<PlayableCharacter>> testPlayableCharacter() {
-        PlayableCharacter character = new PlayableCharacter("mockId", "mockCreatorId", "mockName", Map.of(), "mockClass", List.of(), List.of());
+        PlayableCharacter character = new PlayableCharacter("mockId", "mockCreatorId", "mockName", Map.of(), "mockClass", List.of(), List.of(), "mockRace");
         EnemyCharacter enemy = new EnemyCharacter("enemyId", "enemyCreatorId", "enemyName", "mockEnemyType", 1);
         characterService.addCharacter(character);
         characterService.addCharacter(enemy);
