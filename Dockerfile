@@ -13,7 +13,6 @@ WORKDIR /app
 # copy the built jar (Spring Boot produces an executable jar in target/)
 COPY --from=build /workspace/target/*.jar app.jar
 
-EXPOSE 8080
 ENV JAVA_OPTS=""
 
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
